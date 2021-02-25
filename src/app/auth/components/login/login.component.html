@@ -1,0 +1,84 @@
+<app-header [isLoginPage]="true"></app-header>
+<div class="container-fluid main h-90">
+  <div class="container h-90">
+    <div class="row h-90 justify-content-center align-items-center">
+      <form class="form col-12" #loginForm="ngForm" (ngSubmit)="login()">
+        <div class="row">
+          <div class="col-12">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title form-control">Log In</h3>
+                <p *ngIf="error" class="error">Las credenciales no son correctas.</p>
+              </div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <div class="input-group">
+                    <mat-form-field class="full-width" appearance="fill">
+                      <mat-label>Nombre de usuario</mat-label>
+                      <input
+                        matInput
+                        id="username"
+                        name="username"
+                        class="form-control form-control"
+                        required
+                        #username="ngModel"
+                        [(ngModel)]="$user.username"
+                        autofocus="autofocus"
+                      />
+                    </mat-form-field>
+                    <span class="input-group-addon">
+                      <i class="glyphicon glyphicon-envelope"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <mat-form-field class="full-width" appearance="fill">
+                      <mat-label>Contraseña</mat-label>
+                      <input
+                        id="password"
+                        matInput
+                        [type]="hidePassword ? 'password' : 'text'"
+                        #password="ngModel"
+                        name="password"
+                        [(ngModel)]="$user.password"
+                        required
+                      />
+                      <button
+                        type="button"
+                        mat-icon-button
+                        matSuffix
+                        (click)="hidePassword = !hidePassword"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hidePassword"
+                      >
+                        <mat-icon>{{
+                          hidePassword ? "visibility_off" : "visibility"
+                        }}</mat-icon>
+                      </button>
+                    </mat-form-field>
+
+                    <span class="input-group-addon">
+                      <i class="glyphicon glyphicon-lock"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-footer">
+                <button
+                  type="submit"
+                  class="full-width"
+                  mat-raised-button                 
+                  [disabled]="loginForm.invalid"
+                  [ngClass]="{
+                    'btn-disabled': loginForm.invalid
+                  }"
+                >Iniciar sesión</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

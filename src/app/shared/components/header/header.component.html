@@ -1,0 +1,29 @@
+<!-- Angular Toolbar -->
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <!-- <button mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button> -->
+    <a title="Volver a Inicio" class="page-title" [routerLink]="[ '/' ]">Material</a>
+    <span class="example-spacer"></span>
+
+    <a 
+        *ngIf="!currentUser && !isLoginPage"
+        mat-flat-button 
+        [routerLink]="['/login']"
+    >
+        <mat-icon>login</mat-icon> Ingresar
+    </a>
+
+    <a 
+        *ngIf="currentUser && !isLoginPage"
+        mat-flat-button 
+        (click)="logoutHandler()"
+    >
+        <mat-icon>logout</mat-icon> Cerrar sesión
+    </a>
+
+  </mat-toolbar-row>
+</mat-toolbar>
+
+

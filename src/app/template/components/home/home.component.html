@@ -1,0 +1,37 @@
+<app-header></app-header>
+
+<app-single></app-single>
+
+<div class="container">
+    <mat-card *ngIf="!currentUser">
+        <h3>Bienvenido</h3>
+        <p>Puede iniciar sesión con las siguiente cuentas:</p>
+        <ul>
+          <li>
+            <p><strong class="strong"> Diego </strong><span>tiene acceso a la página Artículos</span></p>
+            <span>Credenciales:</span>
+            <ul class="my-2">
+              <li>Usuario: diegoob</li>
+              <li>Contraseña: Diegoob1??</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong class="strong"> Víctor </strong><span>no tiene permisos para ingresar a la página Artículos</span></p>
+            <p>Credenciales:</p>
+            <ul>
+              <li>Usuario: victorhugo</li>
+              <li>Contraseña: Victor1??</li>
+            </ul>
+          </li>
+        </ul>
+        
+        
+    </mat-card>
+    
+    <ng-container *ngIf="currentUser">
+      <mat-card *hasPermission="'canAccessArticles'">
+        <p>Puedo acceder a la página Artículos</p>
+        <a mat-stroked-button [routerLink]="[ '/articles' ]">Artículos</a>
+      </mat-card>
+    </ng-container>
+</div>
