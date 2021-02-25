@@ -12,6 +12,7 @@ import { LocalStorageService } from '@core/services/local-storage.service';
 import { Router } from '@angular/router';
 
 const apiUrl = environment.API_URL + '/auth';
+const exp = environment.TOKEN_EXPIRE_TIME;
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -41,15 +42,30 @@ export class AuthService {
     return this.authSubject.value;
   }
 
+  private tokenExpirationTime(): string {
+    let today = new Date();
+    today.setSeconds( exp );
+    return today.getTime().toString();
+  }
+
   get isAuthenticated(): boolean {
-    let user = this.localStorageService.get('currentUser');
-    if (user) {
-      if (user.token){
-        return true;
-      }
-    }else{
+    const date = new Date();
+    const user = this.localStorageService.get('currentUser');
+    const payload = this.localStorageService.getEncrypted('payload', user.publicKey)
+
+    if (!user && !payload) {
       return false;
     } 
+
+    let expires = Number(payload.exp);
+    date.setTime(expires); 
+
+    // Comparing expire date with actual date
+    if (date > new Date()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   login(entity: User): Observable<UserAuth> {
@@ -60,21 +76,27 @@ export class AuthService {
       .post<UserAuth>(apiUrl + '/login', entity, httpOptions)
       .pipe(
         tap((user) => {
-          // Store into local storage
-          this.localStorageService.set('currentUser', {
-            token: user.accessToken,
-            username: user.username,
-            publicKey: user.publicKey 
-          });
-
-          this.localStorageService.setEncrypted(
-            'payload',
-            { permissions: user.permissions},
-            user.publicKey
-          );
+          this.saveToken(user);
           this.authSubject.next(user);
         })
       );
+  }
+
+  private saveToken(data : UserAuth) : void {
+    this.localStorageService.set('currentUser', {
+      token: data.accessToken,
+      username: data.username,
+      publicKey: data.publicKey 
+    });
+
+    this.localStorageService.setEncrypted(
+      'payload',
+      { 
+        permissions: data.permissions,
+        exp : this.tokenExpirationTime()
+      },
+      data.publicKey
+    );   
   }
 
   logout(): void {
@@ -82,10 +104,11 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 
-  resetCurrentUser(): void {
+  private resetCurrentUser(): void {
     this.authSubject.next(null);
     this.localStorageService.remove('currentUser');
     this.localStorageService.remove('payload');
+    this.localStorageService.remove('exp');
   }
 
   // This method can be called a couple of different ways

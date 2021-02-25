@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   public error : boolean = false;
   public $user : User = new User();
   public hidePassword : boolean = true;
+  public loading : boolean;
   returnUrl : string;
 
   constructor(
@@ -30,15 +31,17 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.loading = true;
     this.authService.login(this.$user)
       .subscribe(
         () => {
-        this.router.navigateByUrl(this.returnUrl);
+          this.loading = false;
+          this.router.navigateByUrl(this.returnUrl);
         },
         (err)=>{
+          this.loading = false;
           this.error = true;
         }
-
       );
   }
 

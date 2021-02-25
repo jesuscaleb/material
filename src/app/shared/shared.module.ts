@@ -29,6 +29,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 
 
@@ -54,6 +55,7 @@ const sharedModules: any[] = [
   MatListModule,
   MatCardModule,
   MatDialogModule,
+  MatProgressBarModule,
   // Third-Party 
   MomentModule,
   FormsModule,

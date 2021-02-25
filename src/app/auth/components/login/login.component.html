@@ -3,11 +3,13 @@
   <div class="container h-90">
     <div class="row h-90 justify-content-center align-items-center">
       <form class="form col-12" #loginForm="ngForm" (ngSubmit)="login()">
+        
         <div class="row">
           <div class="col-12">
             <div class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title form-control">Log In</h3>
+                <h3 class="mb-2 panel-title form-control">Iniciar sesión</h3>
+                <mat-progress-bar class="my-2" *ngIf="loading" mode="indeterminate"></mat-progress-bar>
                 <p *ngIf="error" class="error">Las credenciales no son correctas.</p>
               </div>
               <div class="panel-body">

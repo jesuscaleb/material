@@ -4,6 +4,7 @@
 
 export const environment = {
   API_URL : "http://localhost:3900/api",
+  TOKEN_EXPIRE_TIME : 3600, // seconds
   production: false
 };
 
