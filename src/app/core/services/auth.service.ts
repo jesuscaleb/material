@@ -51,12 +51,9 @@ export class AuthService {
   get isAuthenticated(): boolean {
     const date = new Date();
     const user = this.localStorageService.get('currentUser');
-    const payload = this.localStorageService.getEncrypted('payload', user.publicKey)
-
-    if (!user && !payload) {
-      return false;
-    } 
-
+    if (!user) { return false; }
+    const payload = this.localStorageService.getEncrypted('payload', user.publicKey);
+    if (!payload) { return false; } 
     let expires = Number(payload.exp);
     date.setTime(expires); 
 
